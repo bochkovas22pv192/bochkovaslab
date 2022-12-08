@@ -3,12 +3,15 @@ package tech.reliab.course.bochkovas.bank.entity;
 import tech.reliab.course.bochkovas.bank.entity.parentClasses.Person;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class User extends Person {
     String job;
     double salary;
     Bank bank;
     double creditRating;
+    ArrayList<PaymentAccount> payments = new ArrayList<PaymentAccount>();
+    ArrayList<CreditAccount> credits = new ArrayList<CreditAccount>();
 
     public User() {}
 
@@ -72,6 +75,22 @@ public class User extends Person {
 
     public void setCreditRating(double creditRating) {
         this.creditRating = creditRating;
+    }
+
+    public ArrayList<PaymentAccount> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(ArrayList<PaymentAccount> payments) {
+        this.payments = payments;
+    }
+
+    public ArrayList<CreditAccount> getCredits() {
+        return credits;
+    }
+
+    public void setCredits(ArrayList<CreditAccount> credits) {
+        this.credits = credits;
     }
 
     @Override

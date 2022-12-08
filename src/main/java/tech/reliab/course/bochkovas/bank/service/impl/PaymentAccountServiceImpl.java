@@ -4,9 +4,6 @@ import tech.reliab.course.bochkovas.bank.entity.PaymentAccount;
 import tech.reliab.course.bochkovas.bank.entity.User;
 import tech.reliab.course.bochkovas.bank.service.PaymentAccountService;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-
 /**
  *  Singleton
  */
@@ -23,8 +20,7 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
     }
 
     private Long id = 0L;
-    private LinkedHashMap<Long, PaymentAccount> paymentAccounts = new LinkedHashMap<Long, PaymentAccount>();
-
+    private PaymentAccount paymentAccount;
 
     @Override
     public PaymentAccount create(User user, String bankName){
@@ -36,26 +32,32 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
         );
         return paymentAccount;
     }
-
+    /**
+     *
+     * @return - возвращает платежный счет
+     */
     @Override
-    public List<PaymentAccount> findAll(){
-        return paymentAccounts.values().stream().toList();
+    public PaymentAccount read(){
+        return paymentAccount;
     }
 
+    /**
+     *
+     * @param paymentAccount - новый платежный счет
+     */
     @Override
-    public void addPaymentAccount(PaymentAccount paymentAccount) {
-        paymentAccounts.put(paymentAccount.getId(), paymentAccount);
+    public void update(PaymentAccount paymentAccount){
+        this.paymentAccount = paymentAccount;
     }
 
+    /**
+     *
+     * @param paymentAccount - платежный счет для удаления
+     */
     @Override
-    public PaymentAccount getPaymentAccountById(Long id) {
-        return paymentAccounts.get(id);
+    public void delete(PaymentAccount paymentAccount){
+        if(this.paymentAccount == paymentAccount){
+            this.paymentAccount = null;
+        }
     }
-
-    @Override
-    public void delPaymentAccountById(Long id) {
-        paymentAccounts.remove(id);
-    }
-
-
 }

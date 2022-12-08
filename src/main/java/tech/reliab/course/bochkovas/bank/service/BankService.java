@@ -1,8 +1,6 @@
 package tech.reliab.course.bochkovas.bank.service;
 
-import tech.reliab.course.bochkovas.bank.entity.Bank;
-
-import java.util.List;
+import tech.reliab.course.bochkovas.bank.entity.*;
 
 public interface BankService {
     /**
@@ -13,33 +11,25 @@ public interface BankService {
     Bank create(String name);
 
     /**
-     *
-     * @return список всех банков
-     */
-    List<Bank> findAll();
-
-    /**
-     * добавляет банк в коллекцию
-     * @param bank - банк
-     */
-    void addBank(Bank bank);
-
-    /**
-     *
-     * @param id - id банка
-     * @return банк с данным id или null
-     */
-    Bank getBankById(Long id);
-
-    /**
-     * удаляет банк по id
-     * @param id - id банка
-     */
-    void delBankById(Long id);
-
-    /**
      * выводит на экран информацию о банке с данным id
      * @param id - id банка
      */
-    void outputBankInfo(Long id);
+    void outputBankInfo(Bank bank);
+
+    void addAtm(Bank bank, BankAtm bankatm);
+
+    void addOffice(Bank bank, BankOffice bankOffice);
+
+    void addEmployee(Bank bank, Employee employee);
+
+    void addUser(Bank bank, User user);
+
+    void delAtm(Bank bank, BankAtm bankatm);
+
+    void delOffice(Bank bank, BankOffice bankOffice);
+
+    void delEmployees(Bank bank, Employee employee);
+
+    void delUser(Bank bank, User user);
+
 }

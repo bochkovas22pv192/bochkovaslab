@@ -1,10 +1,11 @@
 package tech.reliab.course.bochkovas;
 
-import tech.reliab.course.bochkovas.bank.entity.*;
+import tech.reliab.course.bochkovas.bank.entity.Bank;
 import tech.reliab.course.bochkovas.bank.service.*;
 import tech.reliab.course.bochkovas.bank.service.impl.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,7 +17,7 @@ public class Main {
         UserService userService = UserServiceImpl.getInstance();
         PaymentAccountService paymentAccountService = PaymentAccountServiceImpl.getInstance();
         CreditAccountService creditAccountService = CreditAccountServiceImpl.getInstance();
-
+        ArrayList <Bank> banks = new ArrayList<Bank>();
         //Создание сущьностей
         for(int numBunk=0; numBunk<5; numBunk++){
             var bank = bankService.create("Bank"+(numBunk+1));
@@ -27,66 +28,64 @@ public class Main {
                         "Address",
                         1000.
                 );
-                officeService.addOffice(office);
+
                 for(int numEmpl=0; numEmpl<5; numEmpl++){
                     var employee = employeeService.create(
-                            "vasia",
+                            "vasiliy",
                             "pupkin",
                             LocalDate.now(),
-                            "job",
+                            "manager",
                             bank,
                             office,
                             10000.
                     );
-                    employeeService.addEmployee(employee);
+
                 }
             }
             for(int numAtm=0; numAtm<3; numAtm++){
                 var atm = atmService.create(
                         "atm"+(numAtm+1),
                         bank,
-                        officeService.getOfficeById(1L),
-                        employeeService.getEmployeeById(1L),
+                        bank.getListOfOffices().stream().findFirst().get(),
+                        bank.getListOfEmployees().stream().findFirst().get(),
                         100.
                 );
-                atmService.addBankAtm(atm);
+
             }
             for(int numUser=0; numUser<5; numUser++){
                 var user = userService.create(
-                        "user",
-                        "user",
+                        "userFirstName" + numBunk + "."+numUser,
+                        "userLastName" + numBunk + "."+numUser,
                         LocalDate.now(),
                         "job",
                         bank
                 );
-                userService.addUser(user);
+
                 for(int numPay=0; numPay<2; numPay++){
                     var paymentAccount = paymentAccountService.create(
                             user,
                             bank.getName()
                     );
-                    paymentAccountService.addPaymentAccount(paymentAccount);
+                    userService.addPaymentAccount(user, paymentAccount);
                     var credit = creditAccountService.create(
                             user,
                             bank,
                             LocalDate.now(),
                             LocalDate.now(),
                             12,
-                            100000.,
+                            10000.,
                             1000.,
-                            employeeService.findAll().stream().filter(
-                                            empl -> empl.getBank().getId().compareTo(bank.getId())==0)
-                                    .toList().get(0),
+                            bank.getListOfEmployees().get(1),
                             paymentAccount
                     );
-                    creditAccountService.addCreditAccount(credit);
+                    userService.addCreditAccout(user, credit);
                 }
             }
-            bankService.addBank(bank);
+            banks.add(bank);
         }
         //Вывод информации по всем банкам
-        for(var bank : bankService.findAll()){
-            bankService.outputBankInfo(bank.getId());
+        for(var bank : banks){
+            bankService.outputBankInfo(bank);
         }
     }
 }

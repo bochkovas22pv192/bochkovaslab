@@ -1,10 +1,8 @@
 package tech.reliab.course.bochkovas.bank.service.impl;
 
-import tech.reliab.course.bochkovas.bank.entity.Bank;
+import tech.reliab.course.bochkovas.bank.entity.*;
 import tech.reliab.course.bochkovas.bank.service.BankService;
 
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -25,7 +23,6 @@ public class BankServiceImpl implements BankService {
 
     private Long id = 0L;
     private static Random random = new Random();
-    private LinkedHashMap<Long, Bank> banks = new LinkedHashMap<Long, Bank>();
 
     @Override
     public Bank create(String name){
@@ -35,10 +32,6 @@ public class BankServiceImpl implements BankService {
         var bank = new Bank(
                 ++id,
                 name,
-                0,
-                0,
-                0,
-                0,
                 rating,
                 money,
                 rate
@@ -48,57 +41,60 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public List<Bank> findAll(){
-        return banks.values().stream().toList();
-    }
-
-    @Override
-    public void addBank(Bank bank){
-        banks.put(bank.getId(), bank);
-    }
-
-    @Override
-    public Bank getBankById(Long id){
-        return banks.get(id);
-    }
-
-    @Override
-    public void delBankById(Long id){
-        banks.remove(id);
-    }
-
-    @Override
-    public void outputBankInfo(Long id){
-        if(banks.containsKey(id)){
-            System.out.println("Bank:");
-            System.out.println("\t" + getBankById(id));
-            var offices = BankOfficeServiceImpl.getInstance().findAll().stream()
-                    .filter(office -> office.getBank().getId().compareTo(id) == 0).toList();
-            System.out.println("\tOfficese:");
-            for(var office : offices){
-                System.out.println("\t\t" + office);
-                var employees = EmployeeServiceImpl.getInstance().findAll().stream()
-                        .filter(employee -> employee.getBankOffice().getId()
-                                .compareTo(office.getId())==0).toList();
-                System.out.println("\t\tEmployees:");
-                for(var employee : employees){
-                    System.out.println("\t\t\t" + employee);
-                }
-            }
-            System.out.println("\tAtms:");
-            var atms = BankAtmServiceImpl.getInstance().findAll().stream()
-                    .filter(atm -> atm.getBank().getId().compareTo(id)==0).toList();
-            for(var atm : atms){
-                System.out.println("\t\t" + atm);
-            }
-            System.out.println("\tUsers:");
-            var users = UserServiceImpl.getInstance().findAll().stream()
-                    .filter(user -> user.getBank().getId().compareTo(id)==0).toList();
-            for(var user : users){
-                UserServiceImpl.getInstance().outputUserInfo(user.getId());
-            }
-        }else {
-            System.out.println("Not found bank with id:" + id);
+    public void outputBankInfo(Bank bank){
+        System.out.println(bank);
+        for(var office:bank.getListOfOffices()){
+            System.out.println("\t"+office);
         }
+        for(var atm:bank.getListOfAtms()){
+            System.out.println("\t\t"+atm);
+        }
+        for(var employee:bank.getListOfEmployees()){
+            System.out.println("\t\t\t"+employee);
+        }
+        for(var user:bank.getListOfClients()){
+            UserServiceImpl.getInstance().outputUserInfo(user);
+        }
+
     }
+
+    @Override
+    public void addAtm(Bank bank, BankAtm atm){
+        bank.getListOfAtms().add(atm);
+    }
+    @Override
+    public void addOffice(Bank bank, BankOffice office){
+        bank.getListOfOffices().add(office);
+    }
+
+    @Override
+    public void addEmployee(Bank bank,  Employee employee){
+        bank.getListOfEmployees().add(employee);
+    }
+
+    @Override
+    public void addUser(Bank bank,  User user){
+        bank.getListOfClients().add(user);
+    }
+
+    @Override
+    public void delAtm(Bank bank, BankAtm atm){
+        bank.getListOfAtms().remove(atm);
+    }
+
+    @Override
+    public void delOffice(Bank bank, BankOffice bankOffice){
+        bank.getListOfOffices().remove(bankOffice);
+    }
+
+    @Override
+    public void delEmployees(Bank bank, Employee employee){
+        bank.getListOfEmployees().remove(employee);
+    }
+
+    @Override
+    public void delUser(Bank bank, User user){
+        bank.getListOfClients().remove(user);
+    }
+
 }

@@ -1,12 +1,12 @@
 package tech.reliab.course.bochkovas.bank.service.impl;
 
 import tech.reliab.course.bochkovas.bank.entity.Bank;
+import tech.reliab.course.bochkovas.bank.entity.CreditAccount;
+import tech.reliab.course.bochkovas.bank.entity.PaymentAccount;
 import tech.reliab.course.bochkovas.bank.entity.User;
 import tech.reliab.course.bochkovas.bank.service.UserService;
 
 import java.time.LocalDate;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -26,7 +26,6 @@ public class UserServiceImpl implements UserService {
     }
     private Long id = 0L;
     private Random random = new Random();
-    private LinkedHashMap<Long, User> users = new LinkedHashMap<Long, User>();
 
     @Override
     public User create(String firstName, String lastName, LocalDate birthDate, String job, Bank bank){
@@ -41,7 +40,7 @@ public class UserServiceImpl implements UserService {
                 bank,
                 salary / 10
         );
-        bank.setNumberOfClients(bank.getNumberOfClients()+1);
+        bank.getListOfClients().add(user);
         return user;
     }
 
@@ -59,44 +58,36 @@ public class UserServiceImpl implements UserService {
                 bank,
                 salary / 10
         );
-        bank.setNumberOfClients(bank.getNumberOfClients()+1);
+        bank.getListOfClients().add(user);
         return user;
     }
 
-    @Override
-    public List<User> findAll() {
-        return users.values().stream().toList();
+    public void addCreditAccout(User user, CreditAccount credit){
+        user.getCredits().add(credit);
+    }
+
+    public void delCreditAccout(User user, CreditAccount credit){
+        user.getCredits().remove(credit);
+    }
+
+    public void addPaymentAccount(User user, PaymentAccount paymentAccount){
+        user.getPayments().add(paymentAccount);
+    }
+
+    public void delPaymentAccount(User user, PaymentAccount paymentAccount){
+        user.getPayments().remove(paymentAccount);
     }
 
     @Override
-    public void addUser(User user) {
-        users.put(user.getId(), user);
-    }
-
-    @Override
-    public User getUserById(Long id) {
-        return users.get(id);
-    }
-
-    @Override
-    public void delUserById(Long id) {
-        users.remove(id);
-    }
-
-    @Override
-    public void outputUserInfo(Long id) {
+    public void outputUserInfo(User user) {
         System.out.println("User:");
-        System.out.println(users.get(id));
-        var pays = PaymentAccountServiceImpl.getInstance().findAll().stream()
-                .filter(pay -> pay.getUser().getId().compareTo(id)==0).toList();
+        System.out.println(user.getFullName());
         System.out.println("\tPaymentAccounts:");
-        for(var pay : pays){
+        for(var pay : user.getPayments()){
             System.out.println("\t\t"+pay);
         }
-        var credits = CreditAccountServiceImpl.getInstance().findAll().stream()
-                .filter(pay -> pay.getUser().getId().compareTo(id)==0).toList();
         System.out.println("\tCreditAccounts:");
-        for(var credit : credits){
+        for(var credit : user.getCredits()){
             System.out.println("\t\t"+credit);
         }
     }

@@ -7,9 +7,6 @@ import tech.reliab.course.bochkovas.bank.entity.Employee;
 import tech.reliab.course.bochkovas.bank.enums.AtmStatus;
 import tech.reliab.course.bochkovas.bank.service.BankAtmService;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-
 /**
  *  Singleton
  */
@@ -26,8 +23,7 @@ public class BankAtmServiceImpl implements BankAtmService {
     }
 
     private Long id = 0L;
-    private LinkedHashMap<Long, BankAtm> atms = new LinkedHashMap<Long, BankAtm>();
-
+    private BankAtm bankAtm;
 
     @Override
     public BankAtm create(String name, Bank bank, BankOffice bankOffice, Employee employee, double maintenance){
@@ -44,30 +40,38 @@ public class BankAtmServiceImpl implements BankAtmService {
                 bank.getMoneyAmount(),
                 maintenance
         );
-        bank.setNumberOfAtms(bank.getNumberOfAtms()+1);
-        bankOffice.setAtmNumber(bankOffice.getAtmNumber()+1);
+        bank.getListOfAtms().add(bankAtm);
+        bankOffice.getAtmList().add(bankAtm);
         return bankAtm;
     }
 
+    /**
+     *
+     * @return - возвращает банкомат
+     */
     @Override
-    public List<BankAtm> findAll(){
-        return atms.values().stream().toList();
+    public BankAtm read(){
+        return bankAtm;
     }
 
+    /**
+     *
+     * @param bankAtm - новый объект банкомат
+     */
     @Override
-    public void addBankAtm(BankAtm atm){
-        atms.put(atm.getId(), atm);
+    public void update(BankAtm bankAtm){
+        this.bankAtm = bankAtm;
     }
 
+    /**
+     *
+     * @param bankAtm - банкомат для удаления
+     */
     @Override
-    public BankAtm getBankAtmById(Long id){
-        return atms.get(id);
+    public void delete(BankAtm bankAtm){
+        if(this.bankAtm == bankAtm){
+            this.bankAtm = null;
+        }
     }
-
-    @Override
-    public void delBankAtmById(Long id){
-        atms.remove(id);
-    }
-
 
 }

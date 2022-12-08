@@ -1,10 +1,11 @@
 package tech.reliab.course.bochkovas.bank.service;
 
 import tech.reliab.course.bochkovas.bank.entity.Bank;
+import tech.reliab.course.bochkovas.bank.entity.CreditAccount;
+import tech.reliab.course.bochkovas.bank.entity.PaymentAccount;
 import tech.reliab.course.bochkovas.bank.entity.User;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public interface UserService {
     /**
@@ -29,34 +30,14 @@ public interface UserService {
      */
     User create(String firstName, String lastName, String patronymic, LocalDate birthDate, String job, Bank bank);
 
-    /**
-     *
-     * @return список пользователей
-     */
-    List<User> findAll();
+    void addCreditAccout(User user, CreditAccount credit);
 
-    /**
-     * добавляет пользователя в коллекцию
-     * @param user - пользователь
-     */
-    void addUser(User user);
+    void delCreditAccout(User user, CreditAccount credit);
 
-    /**
-     *
-     * @param id - id пользователя
-     * @return пользователя с данным id
-     */
-    User getUserById(Long id);
+    void addPaymentAccount(User user, PaymentAccount paymentAccount);
 
-    /**
-     * удаляет пользователя с данным id
-     * @param id - id пользователя
-     */
-    void delUserById(Long id);
+    void delPaymentAccount(User user, PaymentAccount paymentAccount);
 
-    /**
-     * выводит на экран информацию о пользователе
-     * @param id - id пользователя
-     */
-    void outputUserInfo(Long id);
+    void outputUserInfo(User user);
+
 }

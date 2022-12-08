@@ -4,9 +4,6 @@ import tech.reliab.course.bochkovas.bank.entity.Bank;
 import tech.reliab.course.bochkovas.bank.entity.BankOffice;
 import tech.reliab.course.bochkovas.bank.service.BankOfficeService;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-
 /**
  *  Singleton
  */
@@ -24,7 +21,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
     }
 
     Long id = 0L;
-    private LinkedHashMap<Long, BankOffice> offices = new LinkedHashMap<Long, BankOffice>();
+    private BankOffice bankOffice;
 
     @Override
     public BankOffice create(String name, Bank bank, String address, double rent){
@@ -35,34 +32,43 @@ public class BankOfficeServiceImpl implements BankOfficeService {
                 address,
                 true,
                 true,
-                bank.getNumberOfAtms(),
                 true,
                 true,
                 true,
                 bank.getMoneyAmount(),
                 rent
         );
-        bank.setNumberOfOffices(bank.getNumberOfOffices()+1);
+        bank.getListOfOffices().add(bankOffice);
         return bankOffice;
     }
 
+    /**
+     *
+     * @return - возвращает объект офис
+     */
     @Override
-    public List<BankOffice> findAll(){
-        return offices.values().stream().toList();
+    public BankOffice read(){
+        return bankOffice;
     }
 
+    /**
+     *
+     * @param bankOffice - новый объект
+     */
     @Override
-    public void addOffice(BankOffice office){
-        offices.put(office.getId(), office);
+    public  void update(BankOffice bankOffice){
+        this.bankOffice = bankOffice;
     }
 
+    /**
+     *
+     * @param bankOffice - офис для удалеия
+     */
     @Override
-    public BankOffice getOfficeById(Long id){
-        return offices.get(id);
+    public void delete(BankOffice bankOffice){
+        if(bankOffice == this.bankOffice){
+            this.bankOffice = null;
+        }
     }
 
-    @Override
-    public void delOfficeById(Long id){
-        offices.remove(id);
-    }
 }

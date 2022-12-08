@@ -1,5 +1,7 @@
 package tech.reliab.course.bochkovas.bank.entity;
 
+import java.util.ArrayList;
+
 public class BankOffice {
     Long id;
     Bank bank;
@@ -7,7 +9,7 @@ public class BankOffice {
     String address;
     boolean isWorking;
     boolean isPossiblePlaceAtm;
-    int atmNumber = 0;
+    ArrayList<BankAtm> atmlist = new ArrayList<BankAtm>();
     boolean canApplyLoan;
     boolean canPaymentOfMoney;
     boolean canDepositMoney;
@@ -17,7 +19,7 @@ public class BankOffice {
     public BankOffice() {}
 
     public BankOffice(Long id, Bank bank, String name, String address, boolean isWorking,
-                      boolean isPossiblePlaceAtm, int atmNumber, boolean canApplyLoan,
+                      boolean isPossiblePlaceAtm, boolean canApplyLoan,
                       boolean canPaymentOfMoney, boolean canDepositMoney, double moneyAmount,
                       double rent) {
         this.id = id;
@@ -26,7 +28,6 @@ public class BankOffice {
         this.address = address;
         this.isWorking = isWorking;
         this.isPossiblePlaceAtm = isPossiblePlaceAtm;
-        this.atmNumber = atmNumber;
         this.canApplyLoan = canApplyLoan;
         this.canPaymentOfMoney = canPaymentOfMoney;
         this.canDepositMoney = canDepositMoney;
@@ -41,7 +42,6 @@ public class BankOffice {
         this.address = bankOffice.getAddress();
         this.isWorking = bankOffice.isWorking();
         this.isPossiblePlaceAtm = bankOffice.isPossiblePlaceAtm();
-        this.atmNumber = bankOffice.getAtmNumber();
         this.canApplyLoan = bankOffice.isCanApplyLoan();
         this.canPaymentOfMoney = bankOffice.isCanPaymentOfMoney();
         this.canDepositMoney = bankOffice.isCanDepositMoney();
@@ -97,12 +97,12 @@ public class BankOffice {
         isPossiblePlaceAtm = possiblePlaceAtm;
     }
 
-    public int getAtmNumber() {
-        return atmNumber;
+    public ArrayList<BankAtm> getAtmList() {
+        return atmlist;
     }
 
-    public void setAtmNumber(int atmNumber) {
-        this.atmNumber = atmNumber;
+    public void setAtmList(ArrayList<BankAtm> atmlist) {
+        this.atmlist = atmlist;
     }
 
     public boolean isCanApplyLoan() {
@@ -153,7 +153,7 @@ public class BankOffice {
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", isWorking=" + isWorking +
-                ", atmNumber=" + atmNumber +
+                ", atmNumber=" + atmlist.size() +
                 ", moneyAmount=" + moneyAmount +
                 ", rent=" + rent +
                 '}';

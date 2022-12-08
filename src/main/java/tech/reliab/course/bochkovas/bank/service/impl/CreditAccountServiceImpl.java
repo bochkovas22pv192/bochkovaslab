@@ -4,8 +4,6 @@ import tech.reliab.course.bochkovas.bank.entity.*;
 import tech.reliab.course.bochkovas.bank.service.CreditAccountService;
 
 import java.time.LocalDate;
-import java.util.LinkedHashMap;
-import java.util.List;
 
 /**
  *  Singleton
@@ -22,8 +20,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
         return INSTANCE;
     }
     private Long id = 0L;
-    private LinkedHashMap<Long, CreditAccount> creditAccounts = new LinkedHashMap<Long, CreditAccount>();
-
+    private CreditAccount creditAccount;
 
     @Override
     public CreditAccount create(User user, Bank bank, LocalDate start, LocalDate end, int month,
@@ -43,26 +40,32 @@ public class CreditAccountServiceImpl implements CreditAccountService {
         );
         return creditAccount;
     }
-
+    /**
+     *
+     * @return - возвращает объект кредитный счет
+     */
     @Override
-    public List<CreditAccount> findAll() {
-        return creditAccounts.values().stream().toList();
+    public CreditAccount read(){
+        return creditAccount;
     }
 
+    /**
+     *
+     * @param creditAccount - новый кредитный счет
+     */
     @Override
-    public void addCreditAccount(CreditAccount creditAccount) {
-        creditAccounts.put(creditAccount.getId(), creditAccount);
+    public void update(CreditAccount creditAccount){
+        this.creditAccount = creditAccount;
     }
 
+    /**
+     *
+     * @param creditAccount - кредитный счет для удаления
+     */
     @Override
-    public CreditAccount getCreditAccountById(Long id) {
-        return creditAccounts.get(id);
+    public void delete(CreditAccount creditAccount){
+        if(this.creditAccount == creditAccount){
+            this.creditAccount = null;
+        }
     }
-
-    @Override
-    public void delCreditAccountById(Long id) {
-        creditAccounts.remove(id);
-    }
-
-
 }
