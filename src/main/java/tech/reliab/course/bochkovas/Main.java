@@ -18,7 +18,7 @@ public class Main {
         PaymentAccountService paymentAccountService = PaymentAccountServiceImpl.getInstance();
         CreditAccountService creditAccountService = CreditAccountServiceImpl.getInstance();
         ArrayList <Bank> banks = new ArrayList<Bank>();
-        //Создание сущьностей
+        //Создание сущностей
         for(int numBunk=0; numBunk<5; numBunk++){
             var bank = bankService.create("Bank"+(numBunk+1));
             for(int numOffice=0; numOffice<3; numOffice++){
