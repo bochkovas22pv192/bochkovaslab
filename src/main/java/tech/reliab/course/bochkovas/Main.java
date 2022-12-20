@@ -34,8 +34,8 @@ public class Main {
                 );
                 for(int numEmpl=0; numEmpl<5; numEmpl++){
                     var employee = employeeService.create(
-                            "denis",
-                            "cherny",
+                            "vasia",
+                            "pupkin",
                             LocalDate.now(),
                             "engineer",
                             bank,
