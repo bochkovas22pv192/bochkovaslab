@@ -2,6 +2,8 @@ package tech.reliab.course.bochkovas.bank.service;
 
 import tech.reliab.course.bochkovas.bank.entity.*;
 
+import java.util.List;
+
 public interface BankService {
     /**
      *
@@ -12,24 +14,80 @@ public interface BankService {
 
     /**
      * выводит на экран информацию о банке с данным id
-     * @param id - id банка
+     * @param bank - банк
      */
     void outputBankInfo(Bank bank);
 
-    void addAtm(Bank bank, BankAtm bankatm);
+    /**
+     * Добавляет офис в банк
+     * @param bank - банк
+     * @param office - офис
+     */
+    void addOffice(Bank bank, BankOffice office);
 
-    void addOffice(Bank bank, BankOffice bankOffice);
+    /**
+     * Удаляет офис из банка
+     * @param bank - банк
+     * @param office - офис
+     */
+    void deleteOffice(Bank bank, BankOffice office);
 
+    /**
+     * Добавляет банкомат в банк
+     * @param bank - банк
+     * @param atm - банкомат
+     */
+    void addAtm(Bank bank, BankAtm atm);
+
+    /**
+     * Удаляет офис из банка
+     * @param bank - банк
+     * @param atm - банкомат
+     */
+    void deleteAtm(Bank bank, BankAtm atm);
+
+    /**
+     * Добавляет сотрудника в банк
+     * @param bank - банк
+     * @param employee - сотрудник
+     */
     void addEmployee(Bank bank, Employee employee);
 
+    /**
+     * Удаляет сотрудника из банка
+     * @param bank - банк
+     * @param employee - сотрудник
+     */
+    void deleteEmployee(Bank bank, Employee employee);
+
+    /**
+     * Добавляет пользователя в банк
+     * @param bank - банк
+     * @param user - пользователь
+     */
     void addUser(Bank bank, User user);
 
-    void delAtm(Bank bank, BankAtm bankatm);
+    /**
+     * Удаляет пользователя из банка
+     * @param bank - банк
+     * @param user - пользователь
+     */
+    void deleteUser(Bank bank, User user);
 
-    void delOffice(Bank bank, BankOffice bankOffice);
+    /**
+     * Возвращает офисы, которые могут выдать кредит на данную сумму
+     * @param bank - банк
+     * @param sum - сумма кридита
+     */
+    List<BankOffice> getOfficesForLoans(Bank bank, double sum);
 
-    void delEmployees(Bank bank, Employee employee);
+    /**
+     *
+     * @param bank - банк
+     * @param office - офис
+     * @return Возврашает сотрудников банка из данного офиса, которые могут выдать кредит
+     */
+    List<Employee> getEmployeesForLoans(Bank bank, BankOffice office);
 
-    void delUser(Bank bank, User user);
-
+    void getCredit(List<Bank> banks, User user);
 }

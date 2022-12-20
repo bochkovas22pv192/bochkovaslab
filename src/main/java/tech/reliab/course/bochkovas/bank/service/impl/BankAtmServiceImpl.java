@@ -6,6 +6,8 @@ import tech.reliab.course.bochkovas.bank.entity.BankOffice;
 import tech.reliab.course.bochkovas.bank.entity.Employee;
 import tech.reliab.course.bochkovas.bank.enums.AtmStatus;
 import tech.reliab.course.bochkovas.bank.service.BankAtmService;
+import tech.reliab.course.bochkovas.bank.exceptions.NegativeSumException;
+import tech.reliab.course.bochkovas.bank.exceptions.NotEnoughMoneyException;
 
 /**
  *  Singleton
@@ -23,7 +25,7 @@ public class BankAtmServiceImpl implements BankAtmService {
     }
 
     private Long id = 0L;
-    private BankAtm bankAtm;
+
 
     @Override
     public BankAtm create(String name, Bank bank, BankOffice bankOffice, Employee employee, double maintenance){
@@ -40,38 +42,21 @@ public class BankAtmServiceImpl implements BankAtmService {
                 bank.getMoneyAmount(),
                 maintenance
         );
-        bank.getListOfAtms().add(bankAtm);
-        bankOffice.getAtmList().add(bankAtm);
+        bank.getAtms().add(bankAtm);
+        bankOffice.getAtms().add(bankAtm);
         return bankAtm;
     }
 
-    /**
-     *
-     * @return - возвращает банкомат
-     */
     @Override
-    public BankAtm read(){
-        return bankAtm;
-    }
-
-    /**
-     *
-     * @param bankAtm - новый объект банкомат
-     */
-    @Override
-    public void update(BankAtm bankAtm){
-        this.bankAtm = bankAtm;
-    }
-
-    /**
-     *
-     * @param bankAtm - банкомат для удаления
-     */
-    @Override
-    public void delete(BankAtm bankAtm){
-        if(this.bankAtm == bankAtm){
-            this.bankAtm = null;
+    public void withdrawMoney(BankAtm atm, double sum){
+        if(atm.getMoneyAmount()<sum){
+            throw new NotEnoughMoneyException();
         }
+        if(sum < 0){
+            throw new NegativeSumException();
+        }
+        atm.setMoneyAmount(atm.getMoneyAmount()-sum);
     }
+
 
 }

@@ -3,22 +3,22 @@ package tech.reliab.course.bochkovas.bank.entity;
 public class PaymentAccount {
     Long id;
     User user;
-    String bankName;
+    Bank bank;
     double sum;
 
     public  PaymentAccount() {}
 
-    public PaymentAccount(Long id, User user, String bankName, double sum) {
+    public PaymentAccount(Long id, User user, Bank bank, double sum) {
         this.id = id;
         this.user = user;
-        this.bankName = bankName;
+        this.bank = bank;
         this.sum = sum;
     }
 
     public PaymentAccount(PaymentAccount paymentAccount) {
         this.id = paymentAccount.getId();
         this.user = paymentAccount.getUser();
-        this.bankName = paymentAccount.getBankName();
+        this.bank = paymentAccount.getBank();
         this.sum = paymentAccount.getSum();
     }
 
@@ -38,12 +38,12 @@ public class PaymentAccount {
         this.user = user;
     }
 
-    public String getBankName() {
-        return bankName;
+    public Bank getBank() {
+        return bank;
     }
 
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
+    public void setBank(Bank bank) {
+        this.bank = bank;
     }
 
     public double getSum() {
@@ -59,7 +59,7 @@ public class PaymentAccount {
         return "PaymentAccount{" +
                 "id=" + id +
                 ", userId=" + user.getId() +
-                ", bankName='" + bankName + '\'' +
+                ", bankName='" + bank.getName() + '\'' +
                 ", sum=" + sum +
                 '}';
     }

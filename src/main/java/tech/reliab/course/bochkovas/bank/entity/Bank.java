@@ -1,14 +1,15 @@
 package tech.reliab.course.bochkovas.bank.entity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Bank {
     Long id;
     String name;
-    ArrayList<BankOffice> listOfOffices = new ArrayList<BankOffice>();
-    ArrayList<BankAtm> listOfAtms = new ArrayList<BankAtm>();
-    ArrayList<Employee> listOfEmployees = new ArrayList<Employee>();
-    ArrayList<User> listOfClients = new ArrayList<User>();
+    List<BankOffice> offices = new ArrayList<>();
+    List<BankAtm> atms = new ArrayList<>();
+    List<Employee> employees = new ArrayList<>();
+    List<User> users = new ArrayList<>();
     int rating;
     double moneyAmount;
     double interestRate;
@@ -27,6 +28,10 @@ public class Bank {
     public Bank(Bank bank) {
         this.id = bank.getId();
         this.name = bank.getName();
+        this.offices = bank.getOffices();
+        this.atms = bank.getAtms();
+        this.employees = bank.getEmployees();
+        this.users = bank.getUsers();
         this.rating = bank.getRating();
         this.moneyAmount = bank.getMoneyAmount();
         this.interestRate = bank.getInterestRate();
@@ -46,38 +51,6 @@ public class Bank {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public ArrayList<BankOffice> getListOfOffices() {
-        return listOfOffices;
-    }
-
-    public void setListOfOffices(ArrayList<BankOffice> listOfOffices) {
-        this.listOfOffices = listOfOffices;
-    }
-
-    public ArrayList<BankAtm> getListOfAtms() {
-        return listOfAtms;
-    }
-
-    public void setListOfAtms(ArrayList<BankAtm> listOfAtms) {
-        this.listOfAtms = listOfAtms;
-    }
-
-    public ArrayList<Employee> getListOfEmployees() {
-        return listOfEmployees;
-    }
-
-    public void setListOfEmployees(ArrayList<Employee> listOfEmployees) {
-        this.listOfEmployees = listOfEmployees;
-    }
-
-    public ArrayList<User> getListOfClients() {
-        return listOfClients;
-    }
-
-    public void setListOfClients(ArrayList<User> listOfClients) {
-        this.listOfClients = listOfClients;
     }
 
     public int getRating() {
@@ -104,15 +77,47 @@ public class Bank {
         this.interestRate = interestRate;
     }
 
+    public List<BankOffice> getOffices() {
+        return offices;
+    }
+
+    public void setOffices(List<BankOffice> offices) {
+        this.offices = offices;
+    }
+
+    public List<BankAtm> getAtms() {
+        return atms;
+    }
+
+    public void setAtms(List<BankAtm> atms) {
+        this.atms = atms;
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
     @Override
     public String toString() {
         return "Bank{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", numberOfOffices=" + listOfOffices.size() +
-                ", numberOfAtms=" + listOfAtms.size() +
-                ", numberOfEmployees=" + listOfEmployees.size() +
-                ", numberOfClients=" + listOfClients.size() +
+                ", numberOfOffices=" + offices.size() +
+                ", numberOfAtms=" + atms.size() +
+                ", numberOfEmployees=" + employees.size() +
+                ", numberOfUsers=" + users.size() +
                 ", rating=" + rating +
                 ", moneyAmount=" + moneyAmount +
                 ", interestRate=" + interestRate +

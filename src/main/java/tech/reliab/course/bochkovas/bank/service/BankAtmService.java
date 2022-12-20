@@ -17,8 +17,10 @@ public interface BankAtmService {
      */
     BankAtm create(String name, Bank bank, BankOffice bankOffice, Employee employee, double maintenance);
 
-    BankAtm read();
-    void update(BankAtm bankAtm);
-    void delete(BankAtm bankAtm);
-
+    /**
+     * Снятие денег в банкомате
+     * @param atm - банкомат
+     * @param sum - сумма снятия
+     */
+    void withdrawMoney(BankAtm atm, double sum);
 }
