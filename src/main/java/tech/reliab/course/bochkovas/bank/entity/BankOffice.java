@@ -1,6 +1,7 @@
 package tech.reliab.course.bochkovas.bank.entity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BankOffice {
     Long id;
@@ -9,7 +10,7 @@ public class BankOffice {
     String address;
     boolean isWorking;
     boolean isPossiblePlaceAtm;
-    ArrayList<BankAtm> atmlist = new ArrayList<BankAtm>();
+    List<BankAtm> atms = new ArrayList<>();
     boolean canApplyLoan;
     boolean canPaymentOfMoney;
     boolean canDepositMoney;
@@ -42,6 +43,7 @@ public class BankOffice {
         this.address = bankOffice.getAddress();
         this.isWorking = bankOffice.isWorking();
         this.isPossiblePlaceAtm = bankOffice.isPossiblePlaceAtm();
+        this.atms = bankOffice.getAtms();
         this.canApplyLoan = bankOffice.isCanApplyLoan();
         this.canPaymentOfMoney = bankOffice.isCanPaymentOfMoney();
         this.canDepositMoney = bankOffice.isCanDepositMoney();
@@ -97,14 +99,6 @@ public class BankOffice {
         isPossiblePlaceAtm = possiblePlaceAtm;
     }
 
-    public ArrayList<BankAtm> getAtmList() {
-        return atmlist;
-    }
-
-    public void setAtmList(ArrayList<BankAtm> atmlist) {
-        this.atmlist = atmlist;
-    }
-
     public boolean isCanApplyLoan() {
         return canApplyLoan;
     }
@@ -145,6 +139,14 @@ public class BankOffice {
         this.rent = rent;
     }
 
+    public List<BankAtm> getAtms() {
+        return atms;
+    }
+
+    public void setAtms(List<BankAtm> atms) {
+        this.atms = atms;
+    }
+
     @Override
     public String toString() {
         return "BankOffice{" +
@@ -153,7 +155,7 @@ public class BankOffice {
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", isWorking=" + isWorking +
-                ", atmNumber=" + atmlist.size() +
+                ", atmNumber=" + atms.size() +
                 ", moneyAmount=" + moneyAmount +
                 ", rent=" + rent +
                 '}';

@@ -1,8 +1,13 @@
 package tech.reliab.course.bochkovas.bank.service.impl;
 
 import tech.reliab.course.bochkovas.bank.entity.Bank;
+import tech.reliab.course.bochkovas.bank.entity.BankAtm;
 import tech.reliab.course.bochkovas.bank.entity.BankOffice;
+import tech.reliab.course.bochkovas.bank.exceptions.DeletingNotExistentObjectException;
+import tech.reliab.course.bochkovas.bank.exceptions.NegativeSumException;
 import tech.reliab.course.bochkovas.bank.service.BankOfficeService;
+
+import java.util.List;
 
 /**
  *  Singleton
@@ -21,7 +26,6 @@ public class BankOfficeServiceImpl implements BankOfficeService {
     }
 
     Long id = 0L;
-    private BankOffice bankOffice;
 
     @Override
     public BankOffice create(String name, Bank bank, String address, double rent){
@@ -38,37 +42,30 @@ public class BankOfficeServiceImpl implements BankOfficeService {
                 bank.getMoneyAmount(),
                 rent
         );
-        bank.getListOfOffices().add(bankOffice);
+        bank.getOffices().add(bankOffice);
         return bankOffice;
     }
 
-    /**
-     *
-     * @return - возвращает объект офис
-     */
     @Override
-    public BankOffice read(){
-        return bankOffice;
+    public void addAtm(BankOffice office, BankAtm atm) {
+        office.getAtms().add(atm);
     }
 
-    /**
-     *
-     * @param bankOffice - новый объект
-     */
     @Override
-    public  void update(BankOffice bankOffice){
-        this.bankOffice = bankOffice;
-    }
-
-    /**
-     *
-     * @param bankOffice - офис для удалеия
-     */
-    @Override
-    public void delete(BankOffice bankOffice){
-        if(bankOffice == this.bankOffice){
-            this.bankOffice = null;
+    public void deleteAtm(BankOffice office, BankAtm atm) {
+        if(!office.getAtms().contains(atm)){
+            throw new DeletingNotExistentObjectException();
         }
+        office.getAtms().remove(atm);
+    }
+
+    @Override
+    public List<BankAtm> getAtmsForLoans(BankOffice office, double sum) {
+        if(sum < 0){
+            throw new NegativeSumException();
+        }
+        return office.getAtms().stream().filter(
+                atm-> atm.isCanPaymentOfMoney() && atm.getMoneyAmount() > sum).toList();
     }
 
 }

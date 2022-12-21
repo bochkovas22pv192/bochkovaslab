@@ -23,7 +23,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     private Long id = 0L;
-    private Employee employee;
 
     @Override
     public Employee create(String firstName, String lastName, LocalDate birthDate,
@@ -40,7 +39,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 true,
                 salary
         );
-        bank.getListOfEmployees().add(employee);
+        bank.getEmployees().add(employee);
         return employee;
     }
 
@@ -60,36 +59,8 @@ public class EmployeeServiceImpl implements EmployeeService {
                 true,
                 salary
         );
-        bank.getListOfEmployees().add(employee);
+        bank.getEmployees().add(employee);
         return employee;
     }
 
-    /**
-     *
-     * @return - возвращает объект сотрудник
-     */
-    @Override
-    public Employee read(){
-        return employee;
-    }
-
-    /**
-     *
-     * @param employee - новый сотрудник
-     */
-    @Override
-    public void update(Employee employee){
-        this.employee = employee;
-    }
-
-    /**
-     *
-     * @param employee - сотрудник для удаления
-     */
-    @Override
-    public void delete(Employee employee){
-        if(this.employee == employee){
-            this.employee = null;
-        }
-    }
 }

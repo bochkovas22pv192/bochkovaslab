@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class CreditAccount {
     Long id;
     User user;
-    String bankName;
+    Bank bank;
     LocalDate start;
     LocalDate end;
     int monthNumber;
@@ -17,12 +17,12 @@ public class CreditAccount {
 
     public CreditAccount() {}
 
-    public CreditAccount(Long id, User user, String bankName, LocalDate start,
+    public CreditAccount(Long id, User user, Bank bank, LocalDate start,
                          LocalDate end, int monthNumber, double sum, double monthPayment,
                          double interestRate, Employee employee, PaymentAccount paymentAccount) {
         this.id = id;
         this.user = user;
-        this.bankName = bankName;
+        this.bank = bank;
         this.start = start;
         this.end = end;
         this.monthNumber = monthNumber;
@@ -36,7 +36,7 @@ public class CreditAccount {
     public CreditAccount(CreditAccount creditAccount) {
         this.id = creditAccount.getId();
         this.user = creditAccount.getUser();
-        this.bankName = creditAccount.getBankName();
+        this.bank = creditAccount.getBank();
         this.start = creditAccount.getStart();
         this.end = creditAccount.getEnd();
         this.monthNumber = creditAccount.getMonthNumber();
@@ -79,12 +79,12 @@ public class CreditAccount {
         this.user = user;
     }
 
-    public String getBankName() {
-        return bankName;
+    public Bank getBank() {
+        return bank;
     }
 
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
+    public void setBank(Bank bank) {
+        this.bank = bank;
     }
 
     public LocalDate getStart() {
@@ -140,7 +140,7 @@ public class CreditAccount {
         return "CreditAccount{" +
                 "id=" + id +
                 ", userId=" + user.getId() +
-                ", bankName='" + bankName + '\'' +
+                ", bankName='" + bank.getName() + '\'' +
                 ", start=" + start +
                 ", end=" + end +
                 ", monthNumber=" + monthNumber +

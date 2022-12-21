@@ -28,7 +28,4 @@ public interface CreditAccountService {
                          Employee employee,
                          PaymentAccount paymentAccount
     );
-    CreditAccount read();
-    void update(CreditAccount creditAccount);
-    void delete(CreditAccount creditAccount);
 }
