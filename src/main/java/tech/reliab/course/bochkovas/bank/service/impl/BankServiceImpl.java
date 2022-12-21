@@ -1,5 +1,7 @@
 package tech.reliab.course.bochkovas.bank.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import tech.reliab.course.bochkovas.bank.entity.*;
 import tech.reliab.course.bochkovas.bank.exceptions.DeletingNotExistentObjectException;
 import tech.reliab.course.bochkovas.bank.exceptions.IdException;
@@ -8,8 +10,11 @@ import tech.reliab.course.bochkovas.bank.exceptions.NegativeSumException;
 import tech.reliab.course.bochkovas.bank.service.BankService;
 import tech.reliab.course.bochkovas.bank.utils.BankComparator;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -111,7 +116,11 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public void addUser(Bank bank, User user) {
-        bank.getUsers().add(user);
+        boolean userExists = !bank.getUsers().stream().filter(
+                _user -> _user.getId().compareTo(user.getId())==0).toList().isEmpty();
+        if(!userExists){
+            bank.getUsers().add(user);
+        }
     }
 
     @Override
@@ -203,5 +212,71 @@ public class BankServiceImpl implements BankService {
                         pay -> pay.getBank().getId().compareTo(bank.getId())==0).findFirst().get()
         );
         BankAtmServiceImpl.getInstance().withdrawMoney(atms.get(0), sum);
+    }
+
+    @Override
+    public void exportBankAccounts(Bank bank, String fileName) throws IOException {
+        File file = new File(fileName);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        var paymentAccounts = new ArrayList<PaymentAccount>();
+        var creditAccounts = new ArrayList<CreditAccount>();
+        for(var user: bank.getUsers()){
+            paymentAccounts.addAll(user.getPaymentAccounts());
+            creditAccounts.addAll(user.getCreditAccounts());
+        }
+        Accounts accounts = new Accounts(paymentAccounts, creditAccounts);
+        objectMapper.writeValue(file, accounts);
+    }
+
+    @Override
+    public void importBankAccounts(Bank bank, String fileName) throws IOException {
+        File file = new File(fileName);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        Accounts accounts = objectMapper.readValue(file, Accounts.class);
+        var payments = accounts.paymentAccounts;
+        var credits = accounts.creditAccounts;
+        var users = new ArrayList<User>();
+
+        for(var payment : payments){
+            payment.getUser().addBank(bank);
+            payment.setBank(bank);
+            if(users.stream().filter(user->user.getId().compareTo(payment.getUser().getId())==0).toList().isEmpty()){
+                users.add(payment.getUser());
+                users.get(users.size()-1).addPaymentAccount(payment);
+            }else{
+                users.stream().filter(user -> user.getId().compareTo(
+                        payment.getUser().getId())==0).findFirst().orElseThrow().addPaymentAccount(payment);
+            }
+        }
+        for(var credit: credits){
+            credit.getUser().addBank(bank);
+            credit.setBank(bank);
+            if(users.stream().filter(user->user.getId().compareTo(credit.getUser().getId())==0).toList().isEmpty()){
+                users.add(credit.getUser());
+                users.get(users.size()-1).addCreditAccount(credit);
+            }else{
+                users.stream().filter(user -> user.getId().compareTo(
+                        credit.getUser().getId())==0).findFirst().orElseThrow().addCreditAccount(credit);
+            }
+        }
+        for(var user: users){
+            addUser(bank, user);
+        }
+    }
+
+    private static class Accounts{
+        public List<PaymentAccount> paymentAccounts;
+        public List<CreditAccount> creditAccounts;
+
+        public Accounts(){};
+
+        public Accounts(List<PaymentAccount> paymentAccounts, List<CreditAccount> creditAccounts){
+            this.creditAccounts = creditAccounts;
+            this.paymentAccounts = paymentAccounts;
+        }
+
+
     }
 }

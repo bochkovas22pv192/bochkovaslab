@@ -3,6 +3,7 @@ package tech.reliab.course.bochkovas.bank.service;
 import tech.reliab.course.bochkovas.bank.entity.*;
 
 import java.util.List;
+import java.io.IOException;
 
 public interface BankService {
     /**
@@ -88,6 +89,26 @@ public interface BankService {
      * @return Возврашает сотрудников банка из данного офиса, которые могут выдать кредит
      */
     List<Employee> getEmployeesForLoans(Bank bank, BankOffice office);
-
+    /**
+     * Получение кредита
+     * @param banks - список банков
+     * @param user - пользователь
+     */
     void getCredit(List<Bank> banks, User user);
+
+    /**
+     * Записывает все счета в файл txt
+     * @param bank - банк
+     * @param fileName - имя файла
+     * @throws IOException
+     */
+    void exportBankAccounts(Bank bank, String fileName) throws IOException;
+
+    /**
+     * Считывает все счета из файла txt в банк
+     * @param bank - банк
+     * @param fileName - имя файла
+     * @throws IOException
+     */
+    void importBankAccounts(Bank bank, String fileName) throws IOException;
 }

@@ -1,5 +1,7 @@
 package tech.reliab.course.bochkovas.bank.entity.parentClasses;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.LocalDate;
 
 public class Person {
@@ -7,6 +9,7 @@ public class Person {
     String firstName;
     String lastName;
     String patronymic = null;
+    @JsonIgnore
     LocalDate birthDate;
 
     public  Person(){}

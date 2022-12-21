@@ -1,8 +1,11 @@
 package tech.reliab.course.bochkovas.bank.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class PaymentAccount {
     Long id;
     User user;
+    @JsonIgnore
     Bank bank;
     double sum;
 

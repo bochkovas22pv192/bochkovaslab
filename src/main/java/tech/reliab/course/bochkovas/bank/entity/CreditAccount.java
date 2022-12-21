@@ -1,10 +1,13 @@
 package tech.reliab.course.bochkovas.bank.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.LocalDate;
 
 public class CreditAccount {
     Long id;
     User user;
+    @JsonIgnore
     Bank bank;
     LocalDate start;
     LocalDate end;
@@ -12,7 +15,9 @@ public class CreditAccount {
     double sum;
     double monthPayment;
     double interestRate;
+    @JsonIgnore
     Employee employee;
+    @JsonIgnore
     PaymentAccount paymentAccount;
 
     public CreditAccount() {}
@@ -147,8 +152,8 @@ public class CreditAccount {
                 ", sum=" + sum +
                 ", monthPayment=" + monthPayment +
                 ", interestRate=" + interestRate +
-                ", employeeId=" + employee.getId() +
-                ", paymentAccountId=" + paymentAccount.getId() +
+                //", employeeId=" + employee.getId() +
+                //", paymentAccountId=" + paymentAccount.getId() +
                 '}';
     }
 }

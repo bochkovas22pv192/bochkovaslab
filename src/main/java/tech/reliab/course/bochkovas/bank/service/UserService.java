@@ -3,6 +3,7 @@ package tech.reliab.course.bochkovas.bank.service;
 import tech.reliab.course.bochkovas.bank.entity.Bank;
 import tech.reliab.course.bochkovas.bank.entity.User;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 public interface UserService {
@@ -45,6 +46,14 @@ public interface UserService {
      * @param bank - банк
      */
     void deleteBank(User user, Bank bank);
+
+    /**
+     * Выводит всех счетов пользователя в txt файл, по конкретному банку
+     * @param user - пользователь
+     * @param bank - банк
+     * @param fileName - имя файла
+     */
+    void outputUserAccountsToFile(User user, Bank bank, String fileName) throws IOException;
 
 
 

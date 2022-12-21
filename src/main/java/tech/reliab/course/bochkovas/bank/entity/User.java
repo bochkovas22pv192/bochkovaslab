@@ -1,16 +1,23 @@
 package tech.reliab.course.bochkovas.bank.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import tech.reliab.course.bochkovas.bank.entity.parentClasses.Person;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User extends Person {
     String job;
     double salary;
+    @JsonIgnore
     List<Bank> banks = new ArrayList<>();
+    @JsonIgnore
     List<CreditAccount> creditAccounts = new ArrayList<>();
+    @JsonIgnore
     List<PaymentAccount> paymentAccounts = new ArrayList<>();
     double creditRating;
 
@@ -44,6 +51,12 @@ public class User extends Person {
         this.creditRating = user.getCreditRating();
     }
 
+    public void addPaymentAccount(PaymentAccount paymentAccount){
+        this.paymentAccounts.add(paymentAccount);
+    }
+    public void addCreditAccount(CreditAccount creditAccount){
+        this.creditAccounts.add(creditAccount);
+    }
     public String getJob() {
         return job;
     }
@@ -100,7 +113,6 @@ public class User extends Person {
     public String toString() {
         return "User{" +
                 "id=" + super.getId() +
-                ", fullName='" + super.getFullName() + '\'' +
                 ", birthDate=" + super.getBirthDate() +
                 ", job='" + job + '\'' +
                 ", salary=" + salary +

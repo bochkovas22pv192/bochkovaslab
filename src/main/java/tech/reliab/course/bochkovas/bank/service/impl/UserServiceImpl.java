@@ -4,9 +4,13 @@ import tech.reliab.course.bochkovas.bank.entity.Bank;
 import tech.reliab.course.bochkovas.bank.entity.User;
 import tech.reliab.course.bochkovas.bank.service.UserService;
 import tech.reliab.course.bochkovas.bank.exceptions.DeletingNotExistentObjectException;
+import tech.reliab.course.bochkovas.bank.utils.BankComparator;
 
 import java.time.LocalDate;
 import java.util.Random;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
 
 /**
  *  Singleton
@@ -83,6 +87,32 @@ public class UserServiceImpl implements UserService {
         }
         user.getBanks().remove(bank);
     }
+
+    @Override
+    public void outputUserAccountsToFile(User user, Bank bank, String fileName) throws IOException {
+        File file = new File(fileName);
+        PrintStream printStream = new PrintStream(file);
+        printStream.printf("User: %s\n", user.getFullName());
+        var payments = user.getPaymentAccounts().stream().filter(
+                pay -> pay.getBank().getId().compareTo(bank.getId())==0).toList();
+        if(payments.isEmpty()){
+            printStream.println("\tUser does not have payment accounts");
+        }else{
+            printStream.println("\tPayment accounts:");
+            payments.forEach(printStream::println);
+        }
+
+        var credits = user.getCreditAccounts().stream().filter(
+                credit -> credit.getBank().getId().compareTo(bank.getId())==0).toList();
+        if(payments.isEmpty()){
+            printStream.println("\tUser does not have credit accounts");
+        }else{
+            printStream.println("\tCredit accounts:");
+            credits.forEach(printStream::println);
+        }
+    }
+
+
 
 
 }
