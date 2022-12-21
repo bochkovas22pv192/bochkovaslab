@@ -148,10 +148,10 @@ public class BankServiceImpl implements BankService {
         double sum = reader.nextDouble();
         System.out.println("Banks:");
         for(int i=0; i<banks.size(); i++){
-            System.out.println(String.format("index: %d  ",i)+banks.get(i));
+            System.out.println(String.format("index: %d  ",i+1)+banks.get(i));
         }
         System.out.println("Choose bank: ");
-        int indexOfBank = reader.nextInt();
+        int indexOfBank = reader.nextInt()-1;
         Bank bank = banks.get(indexOfBank);
         System.out.println("Offices:");
         List<BankOffice> offices = BankServiceImpl.getInstance().getOfficesForLoans(bank, sum);
@@ -160,10 +160,10 @@ public class BankServiceImpl implements BankService {
             throw new LendingTermsException();
         }
         for(int i=0; i<bank.getOffices().size(); i++){
-            System.out.println(String.format("index: %d  ",i)+bank.getOffices().get(i));
+            System.out.println(String.format("index: %d  ",i+1)+bank.getOffices().get(i));
         }
         System.out.println("Choose office: ");
-        int indexOfOffice = reader.nextInt();
+        int indexOfOffice = reader.nextInt()-1;
         BankOffice office = offices.get(indexOfOffice);
         List<Employee> employees = BankServiceImpl.getInstance().getEmployeesForLoans(bank, office);
         if(employees.isEmpty()){
@@ -171,10 +171,10 @@ public class BankServiceImpl implements BankService {
             throw new LendingTermsException();
         }
         for(int i=0; i<employees.size(); i++){
-            System.out.println(String.format("index: %d  ",i)+employees.get(i));
+            System.out.println(String.format("index: %d  ",i+1)+employees.get(i));
         }
         System.out.println("Choose employee: ");
-        int indexOfEmployee = reader.nextInt();
+        int indexOfEmployee = reader.nextInt()-1;
         Employee employee = employees.get(indexOfEmployee);
         List<BankAtm> atms = BankOfficeServiceImpl.getInstance().getAtmsForLoans(office, sum);
         if(atms.isEmpty()){
@@ -186,6 +186,7 @@ public class BankServiceImpl implements BankService {
             PaymentAccount payment = PaymentAccountServiceImpl.getInstance().create(user,bank);
         }
         if(user.getCreditRating() < 5000 && bank.getRating() > 50){
+            System.out.println("User credit rating is too low");
             throw new LendingTermsException();
         }
         int month = Math.toIntExact(Math.round(sum/ user.getSalary()));

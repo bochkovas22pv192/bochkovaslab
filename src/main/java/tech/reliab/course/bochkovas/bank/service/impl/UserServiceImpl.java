@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(String firstName, String lastName, LocalDate birthDate, String job){
-        double salary = random.nextInt(100000);
+        double salary = random.nextInt(100000)+10000;
         var user = new User(
                 ++id,
                 firstName,
